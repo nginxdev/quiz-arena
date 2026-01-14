@@ -1,7 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
-import { TamaguiProvider, View, Text, Button, YStack, XStack, Theme } from 'tamagui';
+import {
+  TamaguiProvider,
+  View,
+  Text,
+  Button,
+  YStack,
+  XStack,
+  Theme,
+} from 'tamagui';
 import config from './tamagui.config';
 
 export default function App() {
@@ -29,12 +37,24 @@ function MainScreen() {
     <View flex={1}>
       <LinearGradient
         colors={['#0f0c29', '#302b63', '#24243e']}
-        style={{ flex: 1, paddingTop: 80, paddingHorizontal: 24, alignItems: 'center' }}
+        style={{
+          flex: 1,
+          paddingTop: 80,
+          paddingHorizontal: 24,
+          alignItems: 'center',
+        }}
       >
         <StatusBar style="light" />
 
         {/* Hero Section */}
-        <YStack alignItems="center" marginBottom="$8" animation="medium" enterStyle={{ opacity: 0, scale: 0.9 }} opacity={1} scale={1}>
+        <YStack
+          alignItems="center"
+          marginBottom="$8"
+          animation="medium"
+          enterStyle={{ opacity: 0, scale: 0.9 }}
+          opacity={1}
+          scale={1}
+        >
           <View
             width={100}
             height={100}
@@ -68,7 +88,15 @@ function MainScreen() {
         </YStack>
 
         {/* Action Buttons */}
-        <YStack width="100%" maxWidth={320} gap="$4" animation="medium" enterStyle={{ opacity: 0, y: 30 }} opacity={1} y={0}>
+        <YStack
+          width="100%"
+          maxWidth={320}
+          gap="$4"
+          animation="medium"
+          enterStyle={{ opacity: 0, y: 30 }}
+          opacity={1}
+          y={0}
+        >
           <Button
             size="$5"
             backgroundColor="$purple9"
@@ -78,7 +106,9 @@ function MainScreen() {
           >
             <XStack gap="$3" alignItems="center">
               <Text fontSize={20}>▶️</Text>
-              <Text color="white" fontSize={18} fontWeight="700">Create Room</Text>
+              <Text color="white" fontSize={18} fontWeight="700">
+                Create Room
+              </Text>
             </XStack>
           </Button>
 
@@ -87,13 +117,22 @@ function MainScreen() {
             backgroundColor="rgba(255, 255, 255, 0.05)"
             borderColor="rgba(255, 255, 255, 0.2)"
             borderWidth={2}
-            pressStyle={{ scale: 0.97, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+            pressStyle={{
+              scale: 0.97,
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            }}
             borderRadius="$4"
             animation="quick"
           >
             <XStack gap="$3" alignItems="center">
               <Text fontSize={20}>👥</Text>
-              <Text color="rgba(255, 255, 255, 0.9)" fontSize={18} fontWeight="600">Join Room</Text>
+              <Text
+                color="rgba(255, 255, 255, 0.9)"
+                fontSize={18}
+                fontWeight="600"
+              >
+                Join Room
+              </Text>
             </XStack>
           </Button>
 
@@ -106,7 +145,9 @@ function MainScreen() {
           >
             <XStack gap="$3" alignItems="center">
               <Text fontSize={20}>⚡</Text>
-              <Text color="white" fontSize={18} fontWeight="700">Quick Play</Text>
+              <Text color="white" fontSize={18} fontWeight="700">
+                Quick Play
+              </Text>
             </XStack>
           </Button>
         </YStack>
@@ -132,8 +173,14 @@ function MainScreen() {
             borderWidth={1}
             borderColor="rgba(255, 255, 255, 0.1)"
           >
-            <Text fontSize={24} marginBottom="$2">🏆</Text>
-            <Text fontSize={11} color="rgba(255, 255, 255, 0.7)" textAlign="center">
+            <Text fontSize={24} marginBottom="$2">
+              🏆
+            </Text>
+            <Text
+              fontSize={11}
+              color="rgba(255, 255, 255, 0.7)"
+              textAlign="center"
+            >
               Compete for glory
             </Text>
           </View>
@@ -146,8 +193,14 @@ function MainScreen() {
             borderWidth={1}
             borderColor="rgba(255, 255, 255, 0.1)"
           >
-            <Text fontSize={24} marginBottom="$2">⏱️</Text>
-            <Text fontSize={11} color="rgba(255, 255, 255, 0.7)" textAlign="center">
+            <Text fontSize={24} marginBottom="$2">
+              ⏱️
+            </Text>
+            <Text
+              fontSize={11}
+              color="rgba(255, 255, 255, 0.7)"
+              textAlign="center"
+            >
               Real-time battles
             </Text>
           </View>
@@ -160,8 +213,14 @@ function MainScreen() {
             borderWidth={1}
             borderColor="rgba(255, 255, 255, 0.1)"
           >
-            <Text fontSize={24} marginBottom="$2">🌍</Text>
-            <Text fontSize={11} color="rgba(255, 255, 255, 0.7)" textAlign="center">
+            <Text fontSize={24} marginBottom="$2">
+              🌍
+            </Text>
+            <Text
+              fontSize={11}
+              color="rgba(255, 255, 255, 0.7)"
+              textAlign="center"
+            >
               Play anywhere
             </Text>
           </View>

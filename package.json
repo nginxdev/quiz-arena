@@ -10,7 +10,15 @@
     "serve": "expo start --web",
     "build": "expo export --platform web",
     "build:web": "expo export --platform web",
-    "deploy": "echo 'Configure your deployment target (e.g., GitHub Pages, Vercel)'"
+    "deploy": "echo 'Configure your deployment target (e.g., GitHub Pages, Vercel)'",
+    "prepare": "husky",
+    "lint": "eslint ."
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@tamagui/config": "^1.144.1",
@@ -27,6 +35,13 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "babel-preset-expo": "^54.0.9",
+    "eslint": "^9.39.2",
+    "eslint-config-expo": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
     "typescript": "~5.9.2"
   },
   "private": true,
