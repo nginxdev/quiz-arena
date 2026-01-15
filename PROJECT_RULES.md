@@ -8,6 +8,7 @@ This file outlines strict rules for the agent (Antigravity) to follow when worki
     *   **Standard Extras**: Start with `@tamagui/lucide-icons` for icons to ensure a complete experience.
     *   **NO External Styling Libs**: Do NOT install or use Bootstrap, Tailwind, NativeWind, or any other CSS framework.
     *   **Use Standard Components**: Prioritize standard Tamagui components (e.g., `XStack`, `YStack`, `Button`, `Text`, `Card`) over custom `View`/`Div` implementations.
+    *   **NO New Custom Colors**: Do NOT create new colors. Use **only** the values from `colorTokens` or `semanticTokens` defined in the theme. If a color is missing, check `germanPalette.ts` first.
 
 2.  **Scope & Permissions**
     *   **No Unapproved Features**: Do NOT create specific new features, pages, or complex components without explicit permission from the user.
