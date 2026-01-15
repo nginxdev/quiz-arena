@@ -23,9 +23,13 @@
     ]
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@supabase/supabase-js": "^2.90.1",
     "@tamagui/animations-react-native": "^1.144.1",
     "@tamagui/config": "^1.144.1",
     "@tamagui/lucide-icons": "^1.144.1",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "expo": "~54.0.31",
     "expo-font": "^14.0.10",
     "expo-linear-gradient": "~15.0.8",
@@ -34,6 +38,7 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",
+    "react-native-svg": "^15.15.1",
     "react-native-web": "^0.21.0",
     "tamagui": "^1.144.1"
   },

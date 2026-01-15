@@ -1,4 +1,5 @@
 import { createTamagui, createFont } from 'tamagui';
+import { createAnimations } from '@tamagui/animations-react-native';
 import { config } from '@tamagui/config/v3';
 import {
   germanPalette,
@@ -6,6 +7,21 @@ import {
   semanticTokens,
   themeColors,
 } from './src/theme/germanPalette';
+
+const animations = createAnimations({
+  snappy: {
+    type: 'timing',
+    duration: 150,
+  },
+  quick: {
+    type: 'timing',
+    duration: 150,
+  },
+  medium: {
+    type: 'timing',
+    duration: 300,
+  },
+});
 
 // Define Google Sans
 const googleSansFont = createFont({
@@ -62,6 +78,7 @@ const googleSansFont = createFont({
 
 const tamaguiConfig = createTamagui({
   ...config,
+  animations,
   tokens: {
     ...config.tokens,
     color: {
