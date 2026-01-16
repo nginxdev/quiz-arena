@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { YStack, XStack, H2, Paragraph, Input, Button } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
+import { useTranslation } from 'react-i18next';
 
 interface GuestInputScreenProps {
   onBack: () => void;
@@ -12,6 +13,13 @@ export function GuestInputScreen({
   onContinue,
 }: GuestInputScreenProps) {
   const [name, setName] = useState('');
+  const { t } = useTranslation();
+
+  const handleContinue = () => {
+    if (name.trim()) {
+      onContinue(name);
+    }
+  };
 
   return (
     <YStack
@@ -22,51 +30,55 @@ export function GuestInputScreen({
       enterStyle={{ opacity: 0, y: 0, x: 0, scale: 1 }}
       exitStyle={{ opacity: 0, y: 0, x: 0, scale: 1 }}
       opacity={1}
-      width="100%"
+      paddingHorizontal="$4"
     >
       <YStack
-        gap="$4"
         width="100%"
+        gap="$4"
+        borderWidth={1}
+        borderColor="$borderColor"
+        padding="$6"
+        borderRadius="$8"
+        backgroundColor="$background"
+        shadowColor="black"
+        shadowRadius={40}
+        shadowOpacity={0.1}
+        shadowOffset={{ width: 0, height: 10 }}
         $gtMd={{
-          width: 360, // Slightly tighter width
-          borderWidth: 1,
-          borderColor: '$borderColor', // Ideally semi-transparent
-          padding: '$6', // Standardized to $8
-          borderRadius: '$8', // Standardized to $8
-          backgroundColor: '$background', // Solid background for clarity or keep backgroundStrong
-          shadowColor: 'black',
-          shadowRadius: 40,
-          shadowOpacity: 0.1,
-          shadowOffset: { width: 0, height: 10 },
+          width: 360,
         }}
       >
-        <XStack alignItems="center" gap="$2" marginBottom="$2">
+        <XStack alignItems="center" gap="$2" marginBottom="$4">
           <Button
             chromeless
             icon={ArrowLeft}
             onPress={onBack}
             color="$textMuted"
-            pressStyle={{ opacity: 0.7 }}
             size="$3"
+            pressStyle={{ opacity: 0.7 }}
           />
           <H2 size="$6" color="$text">
-            Guest Access
+            {t('guestName')}
           </H2>
         </XStack>
 
-        <YStack gap="$2" marginTop="$2">
+        <YStack gap="$4">
+          <Paragraph size="$3" color="$textMuted" marginLeft="$2">
+            {t('enterName')}
+          </Paragraph>
           <Input
             size="$4"
             borderWidth={1}
             borderColor="$borderColor"
             backgroundColor="transparent"
             borderRadius="$4"
-            placeholder="Enter your display name"
+            placeholder={t('enterName')}
             placeholderTextColor="$textMuted"
             value={name}
             onChangeText={setName}
-            onSubmitEditing={() => onContinue(name || 'Guest')}
+            autoFocus
             focusStyle={{ borderColor: '$primary', borderWidth: 1 }}
+            onSubmitEditing={handleContinue}
           />
         </YStack>
 
@@ -75,12 +87,13 @@ export function GuestInputScreen({
           size="$4"
           backgroundColor="$primary"
           borderRadius="$6"
-          onPress={() => onContinue(name || 'Guest')}
+          onPress={handleContinue}
+          disabled={!name.trim()}
+          opacity={!name.trim() ? 0.5 : 1}
           pressStyle={{ scale: 0.98, opacity: 0.9 }}
-          disabled={!name.trim()} // Encourage entering a name? or keeping existing behavior
-          opacity={!name.trim() ? 0.8 : 1}
+          hoverStyle={{ opacity: 0.9 }}
         >
-          Start Playing
+          {t('continue')}
         </Button>
       </YStack>
     </YStack>

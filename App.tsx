@@ -19,6 +19,7 @@ import { GuestInputScreen } from './src/screens/GuestInputScreen';
 import { DashboardScreen } from './src/screens/DashboardScreen';
 import { ParticlesBackground } from './src/components/ParticlesBackground';
 import { Session } from '@supabase/supabase-js';
+import './src/i18n';
 import { supabase } from './src/lib/supabase';
 
 type Screen = 'landing' | 'signIn' | 'guestInput' | 'dashboard';

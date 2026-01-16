@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { YStack, XStack, H2, Paragraph, Input, Button, Text } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { signInWithEmail, signUpWithEmail } from '../services/auth';
+import { useTranslation } from 'react-i18next';
 
 interface SignInScreenProps {
   onBack: () => void;
@@ -17,6 +18,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
     type: 'error' | 'success';
     text: string;
   } | null>(null);
+  const { t } = useTranslation();
 
   const handleAuth = async () => {
     setLoading(true);
@@ -26,10 +28,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
         const { error, data } = await signUpWithEmail(email, password);
         if (error) throw error;
         if (data.user && !data.session) {
-          setMessage({
-            type: 'success',
-            text: 'Check your email for confirmation!',
-          });
+          setMessage({ type: 'success', text: t('checkEmail') });
         } else {
           onLogin();
         }
@@ -39,10 +38,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
         onLogin();
       }
     } catch (err: any) {
-      setMessage({
-        type: 'error',
-        text: err.message || 'Authentication failed',
-      });
+      setMessage({ type: 'error', text: err.message || t('authFailed') });
     } finally {
       setLoading(false);
     }
@@ -62,17 +58,17 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
       <YStack
         width="100%"
         gap="$4"
+        borderWidth={1}
+        borderColor="$borderColor"
+        padding="$6"
+        borderRadius="$8"
+        backgroundColor="$background"
+        shadowColor="black"
+        shadowRadius={40}
+        shadowOpacity={0.1}
+        shadowOffset={{ width: 0, height: 10 }}
         $gtMd={{
           width: 360,
-          borderWidth: 1,
-          borderColor: '$borderColor',
-          padding: '$6',
-          borderRadius: '$8',
-          backgroundColor: '$background',
-          shadowColor: 'black',
-          shadowRadius: 40,
-          shadowOpacity: 0.1,
-          shadowOffset: { width: 0, height: 10 },
         }}
       >
         <XStack alignItems="center" gap="$2" marginBottom="$4">
@@ -85,14 +81,14 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
             pressStyle={{ opacity: 0.7 }}
           />
           <H2 size="$6" color="$text">
-            {isRegistering ? 'Sign Up' : 'Sign In'}
+            {isRegistering ? t('signUp') : t('signIn')}
           </H2>
         </XStack>
 
         <YStack gap="$4">
           <YStack gap="$2">
             <Paragraph size="$3" color="$textMuted" marginLeft="$2">
-              Email
+              {t('email')}
             </Paragraph>
             <Input
               size="$4"
@@ -100,7 +96,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
               borderColor="$borderColor"
               backgroundColor="transparent"
               borderRadius="$4"
-              placeholder="Enter your email"
+              placeholder={t('email')}
               placeholderTextColor="$textMuted"
               value={email}
               onChangeText={setEmail}
@@ -110,7 +106,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
           </YStack>
           <YStack gap="$2">
             <Paragraph size="$3" color="$textMuted" marginLeft="$2">
-              Password
+              {t('password')}
             </Paragraph>
             <Input
               size="$4"
@@ -118,7 +114,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
               borderColor="$borderColor"
               backgroundColor="transparent"
               borderRadius="$4"
-              placeholder="Enter your password"
+              placeholder={t('password')}
               placeholderTextColor="$textMuted"
               secureTextEntry
               value={password}
@@ -150,10 +146,10 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
           hoverStyle={{ opacity: 0.9 }}
         >
           {loading
-            ? 'Processing...'
+            ? t('processing')
             : isRegistering
-              ? 'Create Account'
-              : 'Login'}
+              ? t('createAccount')
+              : t('login')}
         </Button>
 
         <XStack
@@ -163,9 +159,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
           gap="$1.5"
         >
           <Paragraph size="$3" color="$textMuted">
-            {isRegistering
-              ? 'Already have an account?'
-              : "Don't have an account?"}
+            {isRegistering ? t('hasAccount') : t('noAccount')}
           </Paragraph>
           <Text
             fontSize="$3"
@@ -178,7 +172,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
             cursor="pointer"
             hoverStyle={{ opacity: 0.8 }}
           >
-            {isRegistering ? 'Sign In' : 'Sign Up'}
+            {isRegistering ? t('signIn') : t('signUp')}
           </Text>
         </XStack>
       </YStack>

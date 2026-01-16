@@ -22,15 +22,24 @@ import {
 } from '@tamagui/lucide-icons';
 import { signOut } from '../services/auth';
 import { Logo } from '../components/Logo';
+import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface DashboardScreenProps {
   userName: string;
 }
 
 export function DashboardScreen({ userName }: DashboardScreenProps) {
+  const { t, i18n } = useTranslation();
+
   const handleSignOut = async () => {
     await signOut();
     // App.tsx auth listener will handle navigation
+  };
+
+  const changeLanguage = async (lang: string) => {
+    await i18n.changeLanguage(lang);
+    await AsyncStorage.setItem('language', lang);
   };
 
   return (
@@ -87,8 +96,26 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
           textAlign="center"
           marginTop="$2"
         >
-          Ready to dominate?
+          {t('ready')}
         </Paragraph>
+
+        {/* Language Switcher */}
+        <XStack marginTop="$4" gap="$2" flexWrap="wrap" justifyContent="center">
+          {['en', 'de', 'es', 'it', 'te'].map((lang) => (
+            <Text
+              key={lang}
+              fontSize="$2"
+              color={i18n.language === lang ? '$primary' : '$textMuted'}
+              onPress={() => changeLanguage(lang)}
+              cursor="pointer"
+              fontWeight={i18n.language === lang ? 'bold' : 'normal'}
+              hoverStyle={{ color: '$primary' }}
+            >
+              {lang.toUpperCase()}
+            </Text>
+          ))}
+        </XStack>
+
         {/* Sign Out Card */}
         <Card
           bordered
@@ -124,7 +151,7 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
             fontWeight="600"
             $gtMd={{ fontSize: '$4' }}
           >
-            Sign Out
+            {t('signOut')}
           </H3>
         </Card>
       </YStack>
@@ -148,7 +175,7 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
           marginBottom="$2"
           $gtMd={{ display: 'none' }} // Hide mobile header if sidebar is present
         >
-          Menu
+          {t('menu')}
         </H1>
 
         <XStack
@@ -186,10 +213,10 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
             }}
           >
             <Text color="$text" fontWeight="600" fontSize="$5">
-              Create Room
+              {t('createRoom')}
             </Text>
             <Text color="$textMuted" fontSize="$2">
-              Host a new game
+              {t('hostNew')}
             </Text>
           </Button>
 
@@ -219,10 +246,10 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
             }}
           >
             <Text color="$text" fontWeight="600" fontSize="$5">
-              Join Room
+              {t('joinRoom')}
             </Text>
             <Text color="$textMuted" fontSize="$2">
-              Enter code to play
+              {t('enterCode')}
             </Text>
           </Button>
 
@@ -243,7 +270,7 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
             }}
           >
             <Text color="white" fontWeight="700" fontSize="$5">
-              Quick Play
+              {t('quickPlay')}
             </Text>
           </Button>
         </XStack>
@@ -262,9 +289,9 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
           }}
         >
           {[
-            { Icon: Trophy, text: 'Rankings' },
-            { Icon: Clock, text: 'History' },
-            { Icon: Globe, text: 'Global' },
+            { Icon: Trophy, text: t('rankings') },
+            { Icon: Clock, text: t('history') },
+            { Icon: Globe, text: t('global') },
           ].map(({ Icon, text }) => (
             <View
               key={text}

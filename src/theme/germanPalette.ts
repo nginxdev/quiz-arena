@@ -62,6 +62,7 @@ export const semanticTokens = {
   text: '#ffffff',
   textStrong: '#ffffff',
   textMuted: germanPalette.twinkleBlue,
+  shadowColor: 'rgba(0,0,0,0.5)',
 };
 
 export const themeColors = {
