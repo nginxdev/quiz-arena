@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { YStack, XStack, H2, Paragraph, Input, Button } from 'tamagui';
+import { YStack, XStack, H2, Paragraph, Input, Button, Text } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
-import { signInWithEmail } from '../services/auth';
+import { signInWithEmail, signUpWithEmail } from '../services/auth';
 
 interface SignInScreenProps {
   onBack: () => void;
@@ -12,15 +12,39 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [message, setMessage] = useState<{
+    type: 'error' | 'success';
+    text: string;
+  } | null>(null);
 
-  const handleLogin = async () => {
+  const handleAuth = async () => {
     setLoading(true);
-    const { error } = await signInWithEmail(email, password);
-    setLoading(false);
-    if (!error) {
-      onLogin();
-    } else {
-      alert('Login failed: ' + error.message);
+    setMessage(null);
+    try {
+      if (isRegistering) {
+        const { error, data } = await signUpWithEmail(email, password);
+        if (error) throw error;
+        if (data.user && !data.session) {
+          setMessage({
+            type: 'success',
+            text: 'Check your email for confirmation!',
+          });
+        } else {
+          onLogin();
+        }
+      } else {
+        const { error } = await signInWithEmail(email, password);
+        if (error) throw error;
+        onLogin();
+      }
+    } catch (err: any) {
+      setMessage({
+        type: 'error',
+        text: err.message || 'Authentication failed',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,7 +52,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
     <YStack
       flex={1}
       justifyContent="center"
-      alignItems="center" // Center horizontally
+      alignItems="center"
       animation="snappy"
       enterStyle={{ opacity: 0, y: 0, x: 0, scale: 1 }}
       exitStyle={{ opacity: 0, y: 0, x: 0, scale: 1 }}
@@ -39,7 +63,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
         width="100%"
         gap="$4"
         $gtMd={{
-          width: 360, // Consistent width
+          width: 360,
           borderWidth: 1,
           borderColor: '$borderColor',
           padding: '$6',
@@ -61,7 +85,7 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
             pressStyle={{ opacity: 0.7 }}
           />
           <H2 size="$6" color="$text">
-            Sign In
+            {isRegistering ? 'Sign Up' : 'Sign In'}
           </H2>
         </XStack>
 
@@ -104,19 +128,59 @@ export function SignInScreen({ onBack, onLogin }: SignInScreenProps) {
           </YStack>
         </YStack>
 
+        {message && (
+          <Paragraph
+            size="$3"
+            color={message.type === 'error' ? '$red10' : '$green10'}
+            textAlign="center"
+          >
+            {message.text}
+          </Paragraph>
+        )}
+
         <Button
           marginTop="$4"
           size="$4"
           backgroundColor="$primary"
           borderRadius="$6"
-          onPress={handleLogin}
+          onPress={handleAuth}
           disabled={loading}
           opacity={loading ? 0.7 : 1}
           pressStyle={{ scale: 0.98, opacity: 0.9 }}
           hoverStyle={{ opacity: 0.9 }}
         >
-          {loading ? 'Signing in...' : 'Login with Supabase'}
+          {loading
+            ? 'Processing...'
+            : isRegistering
+              ? 'Create Account'
+              : 'Login'}
         </Button>
+
+        <XStack
+          justifyContent="center"
+          alignItems="center"
+          marginTop="$3"
+          gap="$1.5"
+        >
+          <Paragraph size="$3" color="$textMuted">
+            {isRegistering
+              ? 'Already have an account?'
+              : "Don't have an account?"}
+          </Paragraph>
+          <Text
+            fontSize="$3"
+            color="$primary"
+            fontWeight="bold"
+            onPress={() => {
+              setIsRegistering(!isRegistering);
+              setMessage(null);
+            }}
+            cursor="pointer"
+            hoverStyle={{ opacity: 0.8 }}
+          >
+            {isRegistering ? 'Sign In' : 'Sign Up'}
+          </Text>
+        </XStack>
       </YStack>
     </YStack>
   );

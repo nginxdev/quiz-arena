@@ -1,4 +1,14 @@
-import { View, YStack, XStack, H1, Paragraph, Button, Text } from 'tamagui';
+import {
+  View,
+  YStack,
+  XStack,
+  H1,
+  H3,
+  Paragraph,
+  Button,
+  Text,
+  Card,
+} from 'tamagui';
 import {
   Clock,
   Globe,
@@ -10,6 +20,7 @@ import {
   Users,
   Zap,
 } from '@tamagui/lucide-icons';
+import { signOut } from '../services/auth';
 import { Logo } from '../components/Logo';
 
 interface DashboardScreenProps {
@@ -17,6 +28,11 @@ interface DashboardScreenProps {
 }
 
 export function DashboardScreen({ userName }: DashboardScreenProps) {
+  const handleSignOut = async () => {
+    await signOut();
+    // App.tsx auth listener will handle navigation
+  };
+
   return (
     <YStack
       flex={1}
@@ -73,6 +89,44 @@ export function DashboardScreen({ userName }: DashboardScreenProps) {
         >
           Ready to dominate?
         </Paragraph>
+        {/* Sign Out Card */}
+        <Card
+          bordered
+          animation="snappy"
+          hoverStyle={{ scale: 1.02 }}
+          pressStyle={{ scale: 0.98 }}
+          onPress={handleSignOut}
+          cursor="pointer"
+          backgroundColor="$background"
+          borderColor="$borderColor"
+          borderRadius="$8"
+          padding="$6"
+          flex={1}
+          minWidth={160}
+          height={120} // Slightly taller
+          justifyContent="center"
+          alignItems="center"
+          gap="$4"
+          marginTop="$6" // Added margin to separate from paragraph
+          $gtMd={{
+            width: '100%', // Take full width of sidebar
+            height: 80, // Adjust height for sidebar
+            flexDirection: 'row', // Align icon and text horizontally
+            justifyContent: 'flex-start', // Align to start
+            paddingHorizontal: '$4',
+            gap: '$3',
+          }}
+        >
+          <LogOut size="$4" color="$red10" />
+          <H3
+            size="$5"
+            color="$red10"
+            fontWeight="600"
+            $gtMd={{ fontSize: '$4' }}
+          >
+            Sign Out
+          </H3>
+        </Card>
       </YStack>
 
       {/* Main Content Area */}

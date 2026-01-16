@@ -18,6 +18,8 @@ import { SignInScreen } from './src/screens/SignInScreen';
 import { GuestInputScreen } from './src/screens/GuestInputScreen';
 import { DashboardScreen } from './src/screens/DashboardScreen';
 import { ParticlesBackground } from './src/components/ParticlesBackground';
+import { Session } from '@supabase/supabase-js';
+import { supabase } from './src/lib/supabase';
 
 type Screen = 'landing' | 'signIn' | 'guestInput' | 'dashboard';
 
@@ -57,14 +59,41 @@ function AppContent() {
   const [userName, setUserName] = useState('');
   const theme = useTheme();
 
+  useEffect(() => {
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUserName(session.user.email?.split('@')[0] || 'User');
+        setCurrentScreen('dashboard');
+      }
+    });
+
+    // Listen for changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session: Session | null) => {
+      if (session) {
+        setUserName(session.user.email?.split('@')[0] || 'User');
+        setCurrentScreen('dashboard');
+      } else {
+        // If we were on dashboard or sign-in, go back to landing
+        // But if on guest input, maybe stay? For simplicity, go landing.
+        setCurrentScreen('landing');
+        setUserName('');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleGuestLogin = (name: string) => {
     setUserName(name);
     setCurrentScreen('dashboard');
   };
 
   const handleSupabaseLogin = () => {
-    setUserName('Supabase User');
-    setCurrentScreen('dashboard');
+    // Handled by onAuthStateChange
+    console.log('Login initiated...');
   };
 
   return (
